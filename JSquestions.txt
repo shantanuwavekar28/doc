@@ -1,0 +1,149 @@
+what is hoisting?
+:- it is a javascript way to move all the variables and function declaration to the top of their scope. only the declaration is hoisted not the initilization. when we try to access the variable value declared using var before its initilization we get undefined but for let and const we get reference error due to temproal dead zone, functions are fully hoisted but not function expressions.
+
+
+difference between var let and const?
+:- var have function scope let and const have block scope, we can reassign the values for var and let but for const we cant reassign the value, for var and let we can first declare the varibale and can afterwards assign the value but for const we need to assign the value during the declaration.
+
+
+different type data types?
+:- we can catogriez data types in two catogrie primitive and non-premitive data types
+primitive - string,number,boolean,bigint,symbol,undefined,null
+non-primitive- objects,arrays,functions
+
+
+explain == vs ===?
+:- == does loosely equality check, === does strict equality check, in == only the values are been compared but in === values and their data types both are compared, in == if the values are of different data types it tries to convert them first and then does the comparison but in === no automatic type conversion is done.
+
+
+call by value and call by reference?
+:- when we call a function and pass primitive data type like number and string etc to it javascript makes copy of that value so anything you change inside the function to the value wont change the original value. when we call a function and pass non-primitive data type their references are been send so anything we change in this value inside a function make changes to the original value.
+
+
+callback functions?
+:-callback functions are the functions which we pass as arguments to another functions we are called onces a event has been completed for example settimeout function takes a callback and executes it once the delay has been completed.
+
+
+what are closures?
+:- we mainly use closures for data privacy and for encapulation of data. the basic structure of a closure is we have a outer function which has private varibales and this function returns a inner function which have access to this variables. the main functionality is even after the outer function is executed the inner function remember the variables of it, this is how we create closures for data privarcy so any one can change the variable value directly.
+
+
+what is lexical scope?
+:- function can only access the variables from the scope where it was defined and not where it was called.
+
+
+explain this keyword?
+:- this refers to the current contest where it has been called and not where it is defined. this is dynamic in nature. if we call this in global scope it refers to the window object, if we call this in a simple object it refers to that object, we can also explicitily bind the this value to a function using call, apply and bind.
+
+
+what are arrow functions?
+:- it is a shorthand and clean way to write a function, a arrow function does not have its own this but it depends on its lexical scope for this value it also does not have the build in argument property.
+
+
+what is destructuring?
+:- it is a shorthand and clean way to extarct values from array and objects, we can also add default property using this.
+
+
+how do you handel errors in javascript?
+:- we use try and catch block to handle errors.
+
+
+what is event loop?
+:- it is a javascript way to handle asyncrohous tasks in a single threaded environment. it runs all your syncrohnous code first in callstack and then constantly check in callback quea and jobquea pull and execute the functions one by one so the app is responsive and does not freeze, without eventloop javascript would freeze for the task which takes longer time. the priority is first all you syncrohnous code then your jobquea then callback quea.
+
+
+what is promises? 
+:- it is a javascript way to handle asynchronous task in single thread environment. promise have three states pending, fullfield and rejected. we use then and catch to hadle the promise.
+
+
+promise.all,promise.allsettled,promise.any,promise.race?
+:- promise.all takes array of promises and return their resolve values. in promise.all all the promises should be fullfield, if any one of the promise fails it return rejected, promise.allsettled takes array of promise and wait until they all are settled it does not matter if any of the promise fails it never return rejected it allways return array with status, value and reason, promise.any returns the first fullfield promise value, promise.race return the first value completd does not matter if its failed or fullfiled.
+
+
+async await?
+:- its a javascript way to handle asynchronous task in single threaded environment. we make a function asynchronous by adding aync keyword to it, a async function always returns a promise, await pauses the function execuation until the promise is resolved or rejected. it cleaner then callback and then.catch
+
+
+promises vs async?
+:- promises have built in error handler like then and catch, for async await we have to wrap them in try and catch block, cleaner way to handle promise using await rather than .then and .catch.
+
+
+higher order functions?
+:- higher order functions are the functions which take another function as argument or return a function as output. for example closure and map etc
+
+
+pure functions?
+:- pure function returns the same output for the same input provided, it does not contain any side effects and does not depends on outside varibale values
+
+
+map,filter,reduce?
+:- map is a transformative array method which is used to iterate over an array, it creates a new array by applying a function logic to each and every element, filter is a array method which is used to iterate over array it created new array but only includes those elements who pass the test function, reduce we use it to reduce the array value to get a single value.
+
+
+map vs foreach?
+:- map creates a new array while foreach is just use to loop over element and does not return anything.
+
+
+event delegation?
+:- event delgation is a technique where we add a common event listner to the parent element rather than adding event listner to each and every child element, when we click on a child element the event bubbles to the parent then the parent check which element is clicked using event.target and perform the business logic accordingly.
+
+
+event capturing?
+:- event capturing follows top to bottom approach, when we click a child element first the parent element event is executed then the child event. this is not a default behaviour of a browser but we can enable it when adding a event listner by adding the third property to true.
+
+
+event bubbling?
+:- event bubbling is the default behaviour of the browser, it follows bottom to top approach, when we click on a child element its event handler is triggered first then all of its parent event handler are also been triggered, we can stop this using the event.stopPropogation method.
+
+
+spread operator?
+:- spread operators is a javascript feature which exapnds all the elements of array and obejcts we use it to create copy of them or to merge two arrays or objects.
+
+
+rest parameter?
+:- when we dynamically pass argument and dont know how many arguments will pe passed in that case we use rest parameter which collect all the arguments in a form of an array.
+
+
+optional chaning ?. and nullish coalescing?
+:- optional chaning prevent run time error when we try to access object properties that can be null or undefined. nullish coalescing checks if the left value is null  then send right value.
+
+
+typeof vs instanceof?
+:- type of is used to check data type of primitive and non-premitive value where instanceof is used to check is the object is created from a specific constructor.
+
+
+type coercion / Implicit vs explicit conversion?
+:- implicit converting the data types automatically by javascript, explicit converting data type by the developer for specific bussiness logic
+
+
+strict mode?
+:- prevent querky behaviour of javascript and throws error when try to set global varibale and strictly validates the code.
+
+
+
+default vs named vs dynamic modules?
+:- modules are used to share data from one js file to another, when we have a single value to be exported we use default export while importing it we can name it whatever, when we have to export multiple values we use named export we have to keep the same name which was used while exporting, when we want to import a module on certion condition then we use dynmaic import.
+
+
+set vs array? -m
+map vs objects? -m
+session storage vs local storage vs cookies vs indexdb?
+debouncing?
+throttling?
+memoization?
+curring?
+shallow copy vs deep copy?
+generator functions?
+getter and setters?
+api calls?
+browser api?
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,122 @@
+what is react?
+:- react is a javascript library used for building user interface.
+it follows declarative programming approach and component based architure.
+it uses virtual dom to minimize dom updates
+
+what is imperative and declarative programming approach.
+:- in imerrative programming to give step by step instruction to manuplate the dom elements directly using vanilla javascript.
+in declarative programming you dont write step by step instructions you just tell react what you want and it figures it out how to do it.
+
+what is component based architure?
+:- component based architure means breaking your UI into small,reusable, independent blocks.
+each component has its own ui and logic making them independent.
+we can use the same button component for entire app by just chaning their text and stying using props.
+unlike monolitic approach which have all html css and js in one large file we craete small pieces of blocks.
+
+what is virtual dom / diffing / reconsilation?
+:- when a react app starts, it takes all your component and convert them in to a virtual dom, a virtual dom is a javacript object which is a lightweight in memory copy of actual dom, its lightweight and fast beacuse it does not have complex browser layout structure, styling and eventlistners. we use virtual dom to minimize the dom updates. when a state or a prop is updated it creates a new virtual dom which have the updated states. react uses diffing algorithm to compare the new virtual dom with the previous and just push the minimal change to the acutal dom rather than rendering the entire page this process is called as reconsilation.
+
+
+what is jsx?
+:- jsx stands for javascript xml, its a syntax extension for javascript which allow us to write html like code in javascript.
+
+what is transpilation?
+:- the process of converting jsx into plain html which the browser understand is called as transpilation tools like babel are used for transpilation
+
+
+component life cycle?
+:- functional components use hooks like useEffect to handle lifecycle methods. It consists of three main phases: mounting - when the component is first created and added to the DOM, updating - when a component is updated due to prop and state changes in dependency array, and unmounting - when a component is removed from the DOM using cleanup function.
+
+what are props?
+:- props are the way to pass data from the parent component to the child component.
+we can pass any data type in props like strings,number,functions,arrays etc.
+props make the component reusable, the same component can show different data based on the props received.
+props are read only the child component cant change the props its receive.
+
+what are states?
+:-states is the internal data that the component mangers itself, when a state is updated the component triggers re-render, we use usestate and usereducer hook to manage the state.
+
+
+state vs props?
+:- state is the internal data of a component, props are the external data recieved from parent compoent.
+a componet can change the state, props are read only.
+state are managed by hooks like usestate and usereducer, props are passed down from parent
+
+usestate?
+:- in functional component react uses usestate to create and mange state, data that trigger re-render when updated, usestate takes the initial value and return array with two elements, the current state value and a updater function to update the value.
+
+useeffect?
+:- in functional component useeffect is used to handle sideeffects, like fetching data and subscribing to a event, it takes a function and a optional dependiency array, when kept the dependiency array empty it runs only once when mounted, with dependiency it run when they change if no dependency array provided it runs on every re-render. it also has a optional cleanup function which run when the component is unmounted or before the next effect runs.
+
+usereducer?
+:- usereducer is used to create and manage complex state with mulitple actions.
+it takes two parameters, first is a reducer function which have a simple if else or switch case logic to decide how the state is udated. and second the initial value.
+it return a array of two elements first the current state and second a dipacth function which is used to trigger the reducer function by sending the action type and payload
+
+useref?
+:- useref is commonly used to access dom elements directly or to store a value which dont trigger re-render when updated
+
+usecallback?
+:- usecallback hooks is used to cache a function and only recreate it when its dedendency changes, it prevent unnecessary re-render of child component who receives functions as prop.
+
+usememo?
+:- usememo is used to cache a result from a expensive function calculation.
+it only reruns when its dependency changes.
+it prevents the function to run unnessaryly when some state changes
+
+
+react.memo?
+:- react.memo is used to prevent unnecessay re-rendering of a child component when a parent is updated but the child prop remain the same.
+
+context api?
+:- context api is used to pass data across components without prop drilling.
+we create a provider object and wrap all the compoents that needs this shared data.
+then in consumer component we use usecontext hook to get this shared data.
+
+custom hooks?
+:- custom hooks are regular javascript functions which uses inbuilt rect  to manage state and side effetcs.
+we move all the complex logic from the component to the custom hook and this custom hooks we can use in are app whenver we want which make it reusable.
+
+state lifting?
+:- state lifting means moving the state from the child compoent to parent compoent so it can be shared with other child components via props
+
+keys?
+:- keys are used to identifiy which list element has been added,removed or updated, without keys react may re-render the entire list again
+
+controlled vs un-controlled component?
+:- in controlled component react manages the state, in un-controlled component dom manages the state.
+
+Conditional Rendering
+React provides multiple ways to conditionally render components based on state or props.
+Common patterns include logical AND (&&), ternary operator (?:), and if-else statements before the return.
+
+React Fragment
+Fragment lets you group multiple elements without adding extra DOM nodes.
+You can use <React.Fragment> or the shorthand <> syntax to wrap multiple elements.
+
+. Code Splitting
+Code splitting allows you to split your bundle into smaller chunks that are loaded on demand.
+React provides React.lazy() for dynamic imports and Suspense for handling loading states.
+
+
+
+
+
+higher order components
+what are pure components
+difference between react node, element and component
+what is proptype
+rules for react hooks
+difference between useeffect and use layouteffect
+useoptimitics
+usefromstatus
+concurrency
+useImperativeHandle hook
+server-side rendering
+Static site generation
+portals
+React Fiber
+synthetic events
+cors in react
+
+

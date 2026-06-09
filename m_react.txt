@@ -1,0 +1,492 @@
+React Basics (1–10)
+
+What is ReactJS?
+    React is an open-source JavaScript library (not a full framework) created by Facebook (now Meta) in 2013 for building fast, interactive user interfaces — especially single-page applications (SPAs).
+    Key idea: Build UI as small, reusable components that manage their own state and can be composed together.
+    React focuses only on the view layer — you add routing (React Router), state management (Redux/Context/Zustand), styling, etc., yourself.
+    Most popular choices for MERN stack frontends in 2026.
+    Explain the key features of React.
+    Component-based — everything is a component (reusable, encapsulated pieces of UI + logic)
+    Virtual DOM — fast reconciliation, only updates what changed
+    Declarative — describe what UI should look like (React decides how to update)
+    JSX — write HTML-like code inside JavaScript
+    Unidirectional data flow — data flows down (parent → child), changes go up via callbacks/props
+    Hooks (since v16.8) — state, lifecycle, side effects in functional components
+    One-way binding — predictable, easier to debug
+    Huge ecosystem: React Router, Redux Toolkit, TanStack Query, Next.js, Tailwind, etc.
+
+What are the differences between React and Angular?
+    FeatureReactAngularTypeLibrary (view layer only)Full framework (includes routing, forms, HTTP, etc.)LanguageJavaScript + JSXTypeScript (strongly typed)Data BindingOne-way (default)Two-way (default)DOM HandlingVirtual DOM + diffingReal DOM + change detectionLearning CurveEasier & fasterSteeper (more concepts)Size / BundleSmallerLargerState ManagementuseState, Context, Redux, Zustand, etc.Services, RxJS, NgRxRenderingClient-side (or SSR/SSG with Next.js)Client-side (or SSR with Angular Universal)FlexibilityHigh (choose your tools)Opinionated (batteries included)Community (2026)Massive (especially frontend)Strong (enterprise)React wins for flexibility and ecosystem speed; Angular for large enterprise teams needing structure.
+    Explain the virtual DOM in React.
+    Virtual DOM is a lightweight JavaScript object that acts as an in-memory copy of the real browser DOM.
+    When state or props change:
+    React creates a new virtual DOM tree
+    Compares (diffs) it with the previous virtual DOM
+    Calculates minimal changes (reconciliation)
+    Applies only those changes to the real DOM
+    This avoids expensive direct DOM manipulations.
+
+How does React achieve better performance with the virtual DOM?
+    Batching — groups multiple state updates into one DOM render
+    Efficient diffing — uses heuristics (keys help) to find differences quickly
+    Minimal updates — only changed nodes are touched (no full page re-render)
+    Fiber architecture (since React 16) — makes rendering interruptible, prioritizes important work
+    Result: smoother UI even with frequent updates (compared to direct DOM manipulation).
+
+What is JSX? Why is it used in React?
+    JSX = JavaScript XML — a syntax extension that lets you write HTML-like code inside JavaScript.
+    It gets transpiled (by Babel) to React.createElement() calls.
+    Why use it?
+    Readable & familiar (looks like HTML)
+    Component composition is natural
+    Embed JS expressions easily with {}
+    Example:
+    jsxconst name = "Shantanu";
+    const element = (
+    <div className="greeting">
+        <h1>Hello, {name}!</h1>
+        <p>From Mumbai</p>
+    </div>
+    );
+
+How do you create components in React?
+    Two main ways (functional is preferred in 2026):Functional component (with Hooks):jsxfunction Welcome({ name }) {
+    return <h1>Hello, {name}!</h1>;
+    }Class component (legacy, still supported):jsxclass Welcome extends React.Component {
+    render() {
+        return <h1>Hello, {this.props.name}!</h1>;
+    }
+    }
+
+What are props in React?
+    Props (properties) are read-only data passed from parent to child component — like function arguments.
+    Used to customize/reuse components.
+    Never modify props inside the child.
+    Example:jsxfunction Greeting(props) {
+    return <h1>Hello, {props.name} from {props.city}!</h1>;
+    }
+
+    // Parent
+    <Greeting name="Shantanu" city="Mumbai" />
+    Explain the concept of state in React.
+    State is private, mutable data that belongs to a component.
+    When state changes → React re-renders the component (and children if needed).
+    In functional components: useState hook
+    In class: this.state + this.setState
+    Example:jsximport { useState } from 'react';
+
+    function Counter() {
+    const [count, setCount] = useState(0);
+    return (
+        <div>
+        <p>Count: {count}</p>
+        <button onClick={() => setCount(count + 1)}>Increment</button>
+        </div>
+    );
+    }
+
+What is the difference between state and props?
+    FeaturePropsStateWho owns itParent componentThe component itselfMutable?No (read-only in child)Yes (via setState / setter)PurposePass data/configuration downManage internal/dynamic UI dataChange triggersParent re-renders → child re-rendersComponent re-renders itselfDefault valuedefaultProps (class) or defaultsuseState(initial) or this.stateExample<User name="Shantanu" />Counter value, form inputs
+
+How do you create functional components in React?
+    Functional components are just JavaScript functions that return JSX (or null).
+    They are the modern standard since Hooks (React 16.8+).
+    Receive props as first argument (usually destructured).Example:jsxfunction UserCard({ name, age, city = "Mumbai" }) {
+    return (
+        <div className="card">
+        <h2>{name}</h2>
+        <p>Age: {age}</p>
+        <p>City: {city}</p>
+        </div>
+    );
+    }
+
+    // Usage
+    <UserCard name="Shantanu" age={28} />Senior note: Always prefer functional components unless you have legacy class-based code.
+
+How do you create class components in React?
+    Extend React.Component (or PureComponent for optimization), define render() method, use this.props and this.state.Example:jsxclass UserCard extends React.Component {
+    render() {
+        const { name, age } = this.props;
+        return (
+        <div>
+            <h2>{name}</h2>
+            <p>Age: {age}</p>
+        </div>
+        );
+    }
+    }
+
+    // Usage same as functional
+    <UserCard name="Shantanu" age={28} />Senior note: Class components are legacy in 2026 — only use for very specific lifecycle needs or old codebases. Convert to functional + hooks when possible.
+
+What are pure components in React?
+    React.PureComponent is a class component that does a shallow comparison of props and state before re-rendering.
+    If nothing changed → skips render (performance boost).
+    Equivalent to React.memo on functional components.Example:jsxclass PureUser extends React.PureComponent {
+    render() {
+        return <div>{this.props.name}</div>;
+    }
+    }Senior note: Use when component re-renders frequently with same props (lists, cards). But shallow compare fails on objects/arrays unless memoized.
+
+What are higher-order components (HOC) in React?
+    A function that takes a component and returns a new enhanced component (adds props, logic, behavior).
+    Pattern for cross-cutting concerns (auth, logging, data fetching).
+    Less common now — custom hooks often replace them.Example (withAuth HOC):jsxfunction withAuth(WrappedComponent) {
+    return function EnhancedComponent(props) {
+        const isLoggedIn = checkAuth(); // your auth logic
+
+        if (!isLoggedIn) return <Redirect to="/login" />;
+
+        return <WrappedComponent {...props} />;
+    };
+    }
+
+    const ProtectedDashboard = withAuth(Dashboard);Senior note: In modern React → prefer custom hooks (useAuth) or layout components over HOCs (cleaner, composable).
+
+How do you pass props to components in React?
+    As attributes when using the component (like HTML attributes).
+    Strings in quotes, JS expressions in {}.
+    Spread operator for many props.Example:jsx// Basic
+    <Greeting name="Shantanu" age={28} isActive={true} />
+
+    // Spread
+    const userData = { name: "Alex", role: "Developer" };
+    <UserProfile {...userData} city="Pune" />
+
+    // Children (special prop)
+    <Card>
+    <h1>Title</h1>
+    <p>Content here</p>
+    </Card>
+
+How do you handle props and state changes in React components?
+    Props: read-only in child, change when parent re-renders or passes new values.
+    State: update with setter (setCount) → triggers re-render.
+    Lift state up: keep shared state in closest common parent.
+    Callback props: child calls parent function to update parent's state.
+    Example (counter with callback):jsxfunction Parent() {
+    const [count, setCount] = useState(0);
+    return <Child count={count} onIncrement={() => setCount(count + 1)} />;
+    }
+
+    function Child({ count, onIncrement }) {
+    return (
+        <div>
+        <p>Count: {count}</p>
+        <button onClick={onIncrement}>+</button>
+        </div>
+    );
+    }
+Explain the lifecycle methods of React components?
+    Class component phases (functional uses useEffect instead):Mounting (creation):
+    constructor()
+    static getDerivedStateFromProps()
+    render()
+    componentDidMount() ← fetch data, subscriptions
+    Updating (props/state change):
+    static getDerivedStateFromProps()
+    shouldComponentUpdate() / PureComponent shallow check
+    render()
+    getSnapshotBeforeUpdate() (rare)
+    componentDidUpdate(prevProps, prevState) ← compare prev/current
+    Unmounting:
+    componentWillUnmount() ← cleanup (clear timers, remove listeners)
+    Senior note: In 2026 → almost all lifecycle logic goes into useEffect with dependencies and cleanup return function.
+    What is the significance of shouldComponentUpdate method?
+    Lets you decide if component should re-render when props/state change.
+    Returns true (default) or false.
+    Used for manual optimization (before PureComponent or memo).
+    Pitfall: wrong logic → stale UI.Example:jsxshouldComponentUpdate(nextProps, nextState) {
+    return nextProps.id !== this.props.id; // only re-render if ID changes
+    }Modern: Use React.memo on functional components instead.
+    How do you implement default props in a React component?
+    Functional: destructuring defaults or defaultProps static.
+    Class: static defaultProps.Example (functional – preferred):jsxfunction Greeting({ name = "Guest", age = 25 }) {
+    return <p>Hello {name}, age {age}</p>;
+    }Legacy class way:jsxclass Greeting extends React.Component {
+    static defaultProps = {
+        name: "Guest",
+        age: 25
+    };
+    render() { /* ... */ }
+    }
+
+What are controlled and uncontrolled components in React?
+    TypeControlledUncontrolledForm input valueManaged by React state (value + onChange)Managed by DOM itself (no value/onChange)Access valueVia stateVia ref (inputRef.current.value)Use caseValidation, formatting, sync with other UISimple forms, legacy integrationPredictable?Yes (single source of truth)Less predictableControlled example (recommended):jsxfunction Form() {
+    const [value, setValue] = useState("");
+    return (
+        <input
+        value={value}
+        onChange={e => setValue(e.target.value.toUpperCase())} // format on type
+        />
+    );
+    }Uncontrolled (with ref):jsxfunction Form() {
+    const inputRef = useRef();
+    const handleSubmit = () => {
+        alert(inputRef.current.value);
+    };
+    return <input ref={inputRef} />;
+    }
+
+State Management (21–30)
+
+What are the different ways to manage state in React?
+    React state management options (ranked by common use in 2026 for MERN apps):
+    Local component state → useState / useReducer (simple UI toggles, form inputs)
+    Context API + useReducer → medium apps, avoid prop drilling (theme, auth, language)
+    Zustand / Jotai → lightweight global state (most popular modern alternative to Redux)
+    Redux Toolkit → large/complex apps with heavy async, middleware, dev tools
+    TanStack Query / SWR → server state (API data caching, loading, mutations)
+    Recoil → atomic state (less common now)
+    MobX → observable state (enterprise teams)
+    Senior tip: Start with useState + Context. Use Zustand for most apps. Redux Toolkit only when you need strict structure, time-travel debugging, or large team collaboration.
+
+Explain the useState hook in React?
+    useState lets functional components have local state.
+    Returns [currentValue, setterFunction].
+    Setter triggers re-render.
+    Can take initial value or lazy initializer function.Example:jsximport { useState } from 'react';
+
+    function Counter() {
+    const [count, setCount] = useState(0); // initial 0
+
+    // Lazy init (runs once)
+    const [data, setData] = useState(() => expensiveCalculation());
+
+    return (
+        <div>
+        <p>Count: {count}</p>
+        <button onClick={() => setCount(prev => prev + 1)}>Increment</button>
+        </div>
+    );
+    }Senior note: Always use functional update setCount(prev => prev + 1) when new state depends on previous (avoids stale closures in async/batched updates).
+
+What is the useEffect hook used for in React?
+    Runs side effects after render (data fetching, subscriptions, DOM mutations, timers).
+    Replaces lifecycle methods (componentDidMount, componentDidUpdate, componentWillUnmount).Syntax:jsxuseEffect(() => {
+    // side effect
+    return () => { /* cleanup */ };
+    }, [dependencies]);
+    No dependency array → runs after every render
+    Empty array [] → runs once on mount
+    Cleanup return function → runs on unmount + before next effect
+    Example (fetch on mount + cleanup):jsxuseEffect(() => {
+    const controller = new AbortController();
+
+    fetch("https://api.example.com/data", { signal: controller.signal })
+        .then(res => res.json())
+        .then(setData);
+
+    return () => controller.abort(); // cleanup
+    }, []);
+
+How do you manage global state in React applications?
+    Small/medium: Context API + useReducer
+    Medium/large: Zustand (simple API, no boilerplate) or Jotai (atomic)
+    Enterprise/large team: Redux Toolkit (strict, dev tools, middleware)
+    Server/API state: TanStack Query (caching, refetch, optimistic updates)
+    Senior tip: Avoid overusing Context for everything (re-renders children). Use Zustand for most global needs in 2026 MERN apps — it's tiny, fast, and TypeScript-friendly.
+
+What are the differences between Redux and Context API for state management?
+    FeatureContext API + useReducerRedux ToolkitBoilerplateLowMedium (but RTK reduces it a lot)PerformanceCan cause re-renders if not memoizedBetter (selectors + memoization)Dev ToolsBasicExcellent (time-travel, action replay)Middleware/AsyncManual (useEffect/thunk-like)Built-in (thunk, saga, RTK Query)Scale / Team sizeMedium appsLarge apps, strict patternsLearning curveEasyModerateUse case in 2026Auth/theme, simple globalComplex async flows, audit trails
+
+Explain the Redux architecture and its core principles?
+    Single source of truth (one store).
+    Three principles:
+    Single store — all app state in one object
+    State is read-only — change via pure actions
+    Changes via pure reducers (previous state + action → new state)
+    Flow: Action → Reducer → New State → UI re-renders (via useSelector).
+    How do you connect Redux with a React application?
+    Modern way (Redux Toolkit + React-Redux):
+    Create store with configureStore
+    Wrap app with <Provider store={store}>
+    Use useSelector + useDispatch in components
+    Example setup:jsx// store.js
+    import { configureStore } from '@reduxjs/toolkit';
+    import counterReducer from './counterSlice';
+
+    export const store = configureStore({
+    reducer: { counter: counterReducer }
+    });jsx// index.js
+    import { Provider } from 'react-redux';
+    import { store } from './store';
+
+    root.render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+    );
+
+What is an action creator in Redux?
+    Function that returns an action object (type + payload).
+    Makes code cleaner and testable.Example (Redux Toolkit):jsx// counterSlice.js
+    import { createSlice } from '@reduxjs/toolkit';
+
+    const counterSlice = createSlice({
+    name: 'counter',
+    initialState: { value: 0 },
+    reducers: {
+        increment: (state) => { state.value += 1; }
+    }
+    });
+
+    export const { increment } = counterSlice.actions;Usage: dispatch(increment())
+
+Explain reducers in Redux?
+    Pure functions that take current state + action → return new state (never mutate).
+    In Redux Toolkit: createSlice auto-generates them (uses Immer for "mutating" syntax safely).Example:jsx// Old manual reducer
+    function counterReducer(state = { value: 0 }, action) {
+    switch (action.type) {
+        case 'increment':
+        return { ...state, value: state.value + 1 };
+        default:
+        return state;
+    }
+    }
+
+How does Redux store work?
+    Single JavaScript object holding entire app state.
+    Created with configureStore.
+    Components subscribe via useSelector (shallow compare → re-render only if selected data changes).
+    Dispatch actions → reducer runs → store updates → subscribed components re-render.Senior note: Use selectors with createSelector (Reselect) for memoized derived data to avoid unnecessary re-renders.
+
+
+Hooks (31–36)
+
+What are hooks in React? Why were they introduced?
+    Hooks are special functions that let you “hook into” React features (state, lifecycle, context, refs) from functional components — no classes needed.Introduced in React 16.8 (2019) because:
+    Class components were confusing (this binding, lifecycle spread across methods)
+    Reusing logic between components was hard (HOCs, render props → wrapper hell)
+    Better code organization, easier testing, smaller bundle
+    Hooks make React simpler, more reusable, and functional-first.
+    Senior note: In 2026, hooks are the standard — almost no new class components are written.
+
+Explain the useState hook in detail?
+
+    Lets functional components have local state.Returns: [currentState, setStateFunction]Key points:
+    Initial value can be primitive or function (lazy init — runs only once)
+    setState can take new value or updater function (safe for batched/async updates)
+    Multiple useState calls allowed per component
+    State updates are asynchronous & batched for performance
+    Example:jsximport { useState } from 'react';
+
+    function Form() {
+    const [name, setName] = useState('');
+    const [age, setAge] = useState(() => 18); // lazy init
+
+    const handleSubmit = () => {
+        setAge(prevAge => prevAge + 1); // updater function – safe
+    };
+
+    return (
+        <div>
+        <input value={name} onChange={e => setName(e.target.value)} />
+        <button onClick={handleSubmit}>Add year</button>
+        <p>{name}, {age} years old</p>
+        </div>
+    );
+    }Senior note: Avoid depending on stale state in callbacks — always use updater form setX(prev => ...) when next value depends on previous.
+
+Explain the useEffect hook in detail?
+    Handles side effects (fetch data, subscriptions, timers, DOM updates) after render.
+    Replaces componentDidMount, componentDidUpdate, componentWillUnmount.Syntax:jsxuseEffect(() => {
+    // side effect code
+    return () => { /* cleanup – optional */ };
+    }, [dependencyArray]);Dependency array rules:
+    [] (empty) → run once on mount
+    [var1, var2] → run when any dep changes
+    No array → run after every render
+    Cleanup function → runs before next effect + on unmount
+    Example (fetch + cleanup):jsxfunction UserProfile({ userId }) {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        let isCurrent = true;
+        fetch(`https://api.example.com/users/${userId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (isCurrent) setUser(data);
+        });
+
+        return () => { isCurrent = false; }; // prevent state update on unmounted component
+    }, [userId]); // re-run when userId changes
+
+    return user ? <h1>{user.name}</h1> : <p>Loading...</p>;
+    }Senior note: ESLint react-hooks/exhaustive-deps rule helps catch missing deps. Common mistake: forgetting deps → stale closures or infinite loops.
+
+How do you create custom hooks in React?
+        Custom hooks are functions starting with use that encapsulate reusable stateful logic.
+        They can call other hooks inside.
+        Goal: share logic between components without HOCs/render props.Example: useFetch hookjsximport { useState, useEffect } from 'react';
+
+        function useFetch(url) {
+        const [data, setData] = useState(null);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+
+        useEffect(() => {
+            setLoading(true);
+            fetch(url)
+            .then(res => res.json())
+            .then(setData)
+            .catch(setError)
+            .finally(() => setLoading(false));
+        }, [url]);
+
+        return { data, loading, error };
+        }
+
+        // Usage
+        function UserList() {
+        const { data, loading, error } = useFetch('https://api.example.com/users');
+        if (loading) return <p>Loading...</p>;
+        if (error) return <p>Error: {error.message}</p>;
+        return <ul>{data.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+        }Senior note: Custom hooks are the #1 way to reuse logic in modern React. Name them useSomething to follow rules.
+
+What are the rules of hooks in React?
+    Two main rules (enforced by ESLint plugin):
+    Only call hooks at the top level
+    Do NOT call inside loops, conditions, nested functions
+    Reason: React relies on call order to match state between renders
+
+    Only call hooks from React function components or custom hooks
+    NOT from regular JS functions, class methods, etc.
+
+    Example of bad code (breaks rules):jsxif (condition) {
+    useState(0); // wrong – conditional
+    }
+
+    for (let i = 0; i < 5; i++) {
+    useEffect(...); // wrong – loop
+    }Senior note: Breaking rules causes bugs like mismatched state or effects running unexpectedly. Always follow — let ESLint catch it.
+
+How do you optimize performance with hooks?
+    Hooks give fine-grained control over re-renders:
+    useMemo → memoize expensive calculations (returns value)
+    useCallback → memoize functions (stable reference for children/dependencies)
+    React.memo → shallow compare props on component (skip render if same)
+    Avoid unnecessary deps in useEffect
+    Use TanStack Query for server state instead of manual useEffect + useState
+    Example:jsxfunction ExpensiveList({ items }) {
+    const sortedItems = useMemo(() => {
+        return [...items].sort((a, b) => a - b); // expensive sort
+    }, [items]);
+
+    const handleClick = useCallback(() => {
+        console.log("Clicked");
+    }, []); // stable function
+
+    return (
+        <ul>
+        {sortedItems.map(item => (
+            <li key={item} onClick={handleClick}>{item}</li>
+        ))}
+        </ul>
+    );
+    }
+
+    const MemoizedList = React.memo(ExpensiveList);
+    

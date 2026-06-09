@@ -1,0 +1,30 @@
+Q2) import React from 'react';
+import './style.css';
+ 
+export default function App() {
+  let [name, setName] = React.useState('');
+ 
+  let debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
+  };
+ 
+  let handleApi = (e) => {
+    setName(e.target.value);
+    console.log('API called with name: ', e.target.value);
+  };
+  return (
+    <div>
+      <input
+        value={name}
+        onChange={debounce(handleApi, 500)}
+        type="text"
+        placeholder="Enter your name"
+      />
+      <p>{name}</p>
+    </div>
+  );
+}
